@@ -8,7 +8,6 @@ ENVVAR=CGO_ENABLED=0
 GOOS?=linux
 GOARCH?=$(shell go env GOARCH)
 REGISTRY?=staging-k8s.gcr.io
-DOCKER_NETWORK?=default
 ifdef BUILD_TAGS
   TAGS_FLAG=--tags ${BUILD_TAGS}
   PROVIDER=-${BUILD_TAGS}
@@ -89,7 +88,7 @@ format:
 	test -z "$$(find . -path ./vendor -prune -type f -o -name '*.go' -exec gofmt -s -w {} + | tee /dev/stderr)"
 
 docker-builder:
-	docker build --network=${DOCKER_NETWORK} -t autoscaling-builder ../builder
+	docker build -t autoscaling-builder ../builder
 
 build-in-docker: build-in-docker-arch-$(GOARCH)
 
